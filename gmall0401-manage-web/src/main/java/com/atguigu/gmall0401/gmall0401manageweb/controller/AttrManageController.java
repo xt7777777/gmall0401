@@ -79,4 +79,17 @@ public class AttrManageController {
 
     }
 
+    @GetMapping("spuImageList")
+    public  List<SpuImage> getSpuImageList(String spuId) {
+
+        return manageService.getSpuImageList(spuId);
+
+    }
+
+
+    @GetMapping("spuSaleAttrList")
+    public List<SpuSaleAttr> getSpuSaleAttrList(String spuId) {
+        return manageService.getSpuSaleAttrList(spuId);
+    }
+
 }

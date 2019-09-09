@@ -68,4 +68,22 @@ public interface ManageService {
     public List<SpuInfo> getSpuList(String catalog3Id);
 
 
+    /**
+     * 根据spuid查询spu列表
+     * @param spuId
+     * @return
+     */
+    public List<SpuImage> getSpuImageList(String spuId);
+
+    /**
+     * 根据spuid查询销售属性
+     * @param spuId
+     * @return
+     */
+    public List<SpuSaleAttr> getSpuSaleAttrList(String spuId);
+
+    /**
+     * 保存skuInfo
+     */
+    public void saveSkuInfo(SkuInfo skuInfo);
 }
