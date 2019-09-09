@@ -32,6 +32,21 @@ public class ManageServiceImpl implements ManageService {
     @Autowired
     BaseCatalog3Mapper baseCatalog3Mapper;
 
+    @Autowired
+    BaseSaleAttrMapper baseSaleAttrMapper;
+
+    @Autowired
+    SpuImageMapper spuImageMapper;
+
+    @Autowired
+    SpuInfoMapper spuInfoMapper;
+
+    @Autowired
+    SpuSaleAttrMapper spuSaleAttrMapper;
+
+    @Autowired
+    SpuSaleAttrValueMapper spuSaleAttrValueMapper;
+
 
 
 
@@ -99,5 +114,44 @@ public class ManageServiceImpl implements ManageService {
 
         baseAttrInfo.setAttrValueList(baseAttrValues);
         return baseAttrInfo;
+    }
+
+    @Override
+    public List<BaseSaleAttr> getBaseSaleAttrList() {
+
+        List<BaseSaleAttr> baseSaleAttrs = baseSaleAttrMapper.selectAll();
+        return baseSaleAttrs;
+    }
+
+    @Override
+    public void saveSpuInfo(SpuInfo spuInfo) {
+        //spu基本信息
+        spuInfoMapper.insertSelective(spuInfo);
+        //图片信息
+        List<SpuImage> spuImageList = spuInfo.getSpuImageList();
+        for (SpuImage spuImage : spuImageList) {
+            spuImage.setSpuId(spuInfo.getId());
+            spuImageMapper.insertSelective(spuImage);
+        }
+        //销售属性
+        List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();
+        for (SpuSaleAttr spuSaleAttr : spuSaleAttrList) {
+            spuSaleAttr.setSpuId(spuInfo.getId());
+            spuSaleAttrMapper.insertSelective(spuSaleAttr);
+
+            //销售属性值
+            List<SpuSaleAttrValue> spuSaleAttrValueList = spuSaleAttr.getSpuSaleAttrValueList();
+            for (SpuSaleAttrValue spuSaleAttrValue : spuSaleAttrValueList) {
+                spuSaleAttrValue.setSpuId(spuInfo.getId());
+                spuSaleAttrValueMapper.insertSelective(spuSaleAttrValue);
+            }
+        }
+    }
+
+    @Override
+    public List<SpuInfo> getSpuList(String catalog3Id) {
+        SpuInfo spuInfo = new SpuInfo();
+        spuInfo.setCatalog3Id(catalog3Id);
+        return spuInfoMapper.select(spuInfo);
     }
 }
