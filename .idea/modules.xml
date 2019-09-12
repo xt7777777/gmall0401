@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/gmall0401.iml" filepath="$PROJECT_DIR$/.idea/gmall0401.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-bean/gmall0401-bean.iml" filepath="$PROJECT_DIR$/gmall0401-bean/gmall0401-bean.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-interface/gmall0401-interface.iml" filepath="$PROJECT_DIR$/gmall0401-interface/gmall0401-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmall0401-item-web/gmall0401-item-web.iml" filepath="$PROJECT_DIR$/gmall0401-item-web/gmall0401-item-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-manage-service/gmall0401-manage-service.iml" filepath="$PROJECT_DIR$/gmall0401-manage-service/gmall0401-manage-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-manage-web/gmall0401-manage-web.iml" filepath="$PROJECT_DIR$/gmall0401-manage-web/gmall0401-manage-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-order-web/gmall0401-order-web.iml" filepath="$PROJECT_DIR$/gmall0401-order-web/gmall0401-order-web.iml" />

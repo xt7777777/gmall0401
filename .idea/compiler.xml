@@ -10,6 +10,7 @@
         <module name="fastdfs-client-java" />
         <module name="gmall0401-bean" />
         <module name="gmall0401-interface" />
+        <module name="gmall0401-item-web" />
         <module name="gmall0401-manage-service" />
         <module name="gmall0401-manage-web" />
         <module name="gmall0401-order-web" />
@@ -23,6 +24,7 @@
       <module name="fastdfs-client-java" target="1.6" />
       <module name="gmall0401-bean" target="1.8" />
       <module name="gmall0401-interface" target="1.8" />
+      <module name="gmall0401-item-web" target="1.8" />
       <module name="gmall0401-manage-service" target="1.8" />
       <module name="gmall0401-manage-web" target="1.8" />
       <module name="gmall0401-order-web" target="1.8" />

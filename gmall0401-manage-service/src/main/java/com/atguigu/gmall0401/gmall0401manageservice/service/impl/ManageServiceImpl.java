@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author xtsky
@@ -234,5 +236,48 @@ public class ManageServiceImpl implements ManageService {
             skuImageMapper.insertSelective(image);
         }
 
+    }
+
+    @Override
+    public SkuInfo getSkuInfo(String skuId) {
+
+        SkuInfo skuInfo = skuInfoMapper.selectByPrimaryKey(skuId);
+
+        SkuImage skuImage = new SkuImage();
+        skuImage.setSkuId(skuId);
+        List<SkuImage> skuImageList = skuImageMapper.select(skuImage);
+        skuInfo.setSkuImageList(skuImageList);
+
+//        SkuAttrValue skuAttrValue = new SkuAttrValue();
+//        skuAttrValue.setSkuId(skuId);
+//        List<SkuAttrValue> skuAttrValueList = skuAttrValueMapper.select(skuAttrValue);
+//        skuInfo.setSkuAttrValueList(skuAttrValueList);
+
+        SkuSaleAttrValue skuSaleAttrValue = new SkuSaleAttrValue();
+        skuSaleAttrValue.setSkuId(skuId);
+        List<SkuSaleAttrValue> skuSaleAttrValueList = skuSaleAttrValueMapper.select(skuSaleAttrValue);
+        skuInfo.setSkuSaleAttrValueList(skuSaleAttrValueList);
+
+        return skuInfo;
+    }
+
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrListCheckSku(String spuId, String skuId) {
+
+        List<SpuSaleAttr> spuSaleAttrListBySpuIdCheckSku = spuSaleAttrMapper.getSpuSaleAttrListBySpuIdCheckSku(spuId, skuId);
+
+        return spuSaleAttrListBySpuIdCheckSku;
+    }
+
+    @Override
+    public Map getSkuValueIdsMap(String spuId) {
+        List<Map> mapList = skuSaleAttrValueMapper.getSaleAttrValuesBySpu(spuId);
+        Map skuValueIdsMap = new HashMap();
+        for (Map map : mapList) {
+            String skuId = map.get("sku_id") + "";
+            String valueIds = map.get("value_ids") + "";
+            skuValueIdsMap.put(valueIds,skuId);
+        }
+        return skuValueIdsMap;
     }
 }
