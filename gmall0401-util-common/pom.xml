@@ -70,6 +70,12 @@
             <artifactId>spring-boot-starter-dubbo</artifactId>
         </dependency>
 
+        <!-- 父工程中有了 https://mvnrepository.com/artifact/redis.clients/jedis-->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+
     </dependencies>
 
 
