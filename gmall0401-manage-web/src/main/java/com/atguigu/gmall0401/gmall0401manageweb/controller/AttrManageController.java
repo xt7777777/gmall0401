@@ -2,7 +2,9 @@ package com.atguigu.gmall0401.gmall0401manageweb.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.atguigu.gmall0401.bean.*;
+import com.atguigu.gmall0401.service.ListService;
 import com.atguigu.gmall0401.service.ManageService;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +19,10 @@ public class AttrManageController {
 
     @Reference
     private ManageService manageService;
+
+    @Reference
+    private ListService listService;
+
 
     @PostMapping("getCatalog1")
     public List<BaseCatalog1> getCatalog1(){
@@ -90,6 +96,31 @@ public class AttrManageController {
     @GetMapping("spuSaleAttrList")
     public List<SpuSaleAttr> getSpuSaleAttrList(String spuId) {
         return manageService.getSpuSaleAttrList(spuId);
+    }
+
+
+    public String onSaleBySqu(String spuId){
+        //根据 spu 把其下的所有sku上架！
+        return null;
+    }
+
+    @PostMapping("onSale")
+    public String onSale(@RequestParam("skuId") String skuId){
+
+        SkuInfo skuInfo = manageService.getSkuInfo(skuId);
+
+        SkuLsInfo skuLsInfo = new SkuLsInfo();
+
+        try {
+            BeanUtils.copyProperties(skuLsInfo,skuInfo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        listService.saveSkuLsInfo(skuLsInfo);
+
+        return "success";
+
     }
 
 }

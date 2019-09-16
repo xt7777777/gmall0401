@@ -259,11 +259,11 @@ public class ManageServiceImpl implements ManageService {
     public SkuInfo getSkuInfoDb(String skuId) {
 
         System.err.println(Thread.currentThread() + "读取数据库！！");
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            System.err.println("520");
-        }
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            System.err.println("520");
+//        }
 
         //测试 。。
 //        Jedis jedis =  redisUtil.getJedis();
@@ -275,16 +275,19 @@ public class ManageServiceImpl implements ManageService {
             return null;
         }
 
+        // 图片
         SkuImage skuImage = new SkuImage();
         skuImage.setSkuId(skuId);
         List<SkuImage> skuImageList = skuImageMapper.select(skuImage);
         skuInfo.setSkuImageList(skuImageList);
 
-//        SkuAttrValue skuAttrValue = new SkuAttrValue();
-//        skuAttrValue.setSkuId(skuId);
-//        List<SkuAttrValue> skuAttrValueList = skuAttrValueMapper.select(skuAttrValue);
-//        skuInfo.setSkuAttrValueList(skuAttrValueList);
+        // 平台属性
+        SkuAttrValue skuAttrValue = new SkuAttrValue();
+        skuAttrValue.setSkuId(skuId);
+        List<SkuAttrValue> skuAttrValueList = skuAttrValueMapper.select(skuAttrValue);
+        skuInfo.setSkuAttrValueList(skuAttrValueList);
 
+        // 销售属性
         SkuSaleAttrValue skuSaleAttrValue = new SkuSaleAttrValue();
         skuSaleAttrValue.setSkuId(skuId);
         List<SkuSaleAttrValue> skuSaleAttrValueList = skuSaleAttrValueMapper.select(skuSaleAttrValue);
