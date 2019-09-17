@@ -70,11 +70,10 @@
             筛选条件	    
         </div>
 		<i><img src="/image/right-@1x.png" alt=""></i>
-        <span  >&quot;小米&quot;</span>
-		<a class="select-attr"     href="#"     > 2G<b> ✖ </b>
-		</a>
-		 <a class="select-attr"   href="#"      > 屏幕尺寸:5.1-5.5英寸<b> ✖ </b>
-		</a>
+        <span th:if="${keyword}!=null" th:text="'&quot;'+ ${keyword} +'&quot;'" >&quot;小米&quot;</span>
+		<a class="select-attr" th:href="'/list.html?'+${baseAttrValue.paramUrl}"  th:each="baseAttrValue:${selectedValueList}"  th:utext="${baseAttrValue.valueName}+'<b> ✖ </b>'"  > 2G<b> ✖ </b> </a>
+         <!--<a class="select-attr"   href="#"      > 屏幕尺寸:5.1-5.5英寸<b> ✖ </b>-->
+        <!--</a>-->
 
     </div>
 </div>
@@ -476,7 +475,7 @@
         $(".page_span1").empty();
         var totalPage = [[${totalPages}]];
         var pageNo = [[${pageNo}]];
-        var urlParam = [[${urlParam}]];
+        var urlParam = [[${paramUrl}]];
 
         //上一页
         var $lastPage =  '<a href="/list.html?'+urlParam+'&pageNo='+(pageNo-1)+'">< 上一页</a>';

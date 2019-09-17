@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,8 +45,11 @@ public class ListController {
         List<BaseAttrInfo> attrList = manageService.getAttrList(attrValueIdList);
         model.addAttribute("attrList", attrList);
 
+        // 已选择的平台属性值信息列表
+        List<BaseAttrValue> selectedValueList = new ArrayList<>();
+
         String paramUrl = makeParamUrl(skuLsParams);
-        model.addAttribute("paramUrl", paramUrl); // keyword
+
         // 把所有已经选择的数值 从属性 属性值 清单中删除属性
         // 清单一 attrList 已选择的属性值
         if (skuLsParams.getValueId() != null && skuLsParams.getValueId().length >0) {
@@ -58,6 +62,12 @@ public class ListController {
                         String selectedValueId = skuLsParams.getValueId()[i];
                         if (baseAttrValue.getId().equals(selectedValueId)) {
                             iterator.remove(); // 如果清单中的属性值和已选择的属性值相同 那么删除对应的属性行
+                            // 添加到已选择列表
+                            // baseAttrValue 增加面包屑的url
+                            // 历史url - 当前valueId
+                            String selectedParamUrl = makeParamUrl(skuLsParams, selectedValueId);// 面包屑的取消路径
+                            baseAttrValue.setParamUrl(selectedParamUrl);
+                            selectedValueList.add(baseAttrValue);
                         }
 
                     }
@@ -65,6 +75,16 @@ public class ListController {
 
             }
         }
+
+        model.addAttribute("paramUrl", paramUrl); // keyword=xxx&valueId=xxx&valueId=xxx ......
+
+        model.addAttribute("selectedValueList",selectedValueList);
+
+        model.addAttribute("keyword", skuLsParams.getKeyword());
+
+        model.addAttribute("pageNo", skuLsParams.getPageNo());
+
+        model.addAttribute("totalPages", skuLsResult.getTotalPages());
 
         return "list";
 
@@ -76,7 +96,7 @@ public class ListController {
      * @param skuLsParams
      * @return
      */
-    public String makeParamUrl(SkuLsParams skuLsParams){
+    public String makeParamUrl(SkuLsParams skuLsParams, String... excludeValueId){
 
         String paramUrl="";
 
@@ -89,6 +109,15 @@ public class ListController {
         if (skuLsParams.getValueId() != null && skuLsParams.getValueId().length > 0){
             for (int i = 0; i < skuLsParams.getValueId().length; i++) {
                  String valueId = skuLsParams.getValueId()[i];
+
+                if (excludeValueId != null && excludeValueId.length > 0){
+                    // 需要排除的valueid
+                    String exValueId = excludeValueId[0];
+                    if (valueId.equals(exValueId)){
+                        continue;
+                    }
+                }
+
                 if (paramUrl.length() > 0){
                     paramUrl += "&";
                 }
