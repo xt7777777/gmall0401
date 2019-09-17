@@ -96,7 +96,7 @@
                     </div>
                     <div class="sl_value">
                         <ul>
-                            <li th:each="baseAttrValue:${baseAttrInfo.attrValueList}" ><a th:text="${baseAttrValue.valueName}" href="#"  >属性值111</a></li>
+                            <li th:each="baseAttrValue:${baseAttrInfo.attrValueList}" ><a th:text="${baseAttrValue.valueName}" th:href="'/list.html?'+${paramUrl}+'&valueId='+${baseAttrValue.id}" href="#"  >属性值111</a></li>
 							<!--<li  ><a  href="#"  >属性值222</a></li>-->
 						  </ul>
                     </div>
