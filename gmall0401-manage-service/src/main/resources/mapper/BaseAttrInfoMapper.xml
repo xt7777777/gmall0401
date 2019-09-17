@@ -11,6 +11,15 @@
         ON bi.id=bv.`attr_id`
         WHERE bi.`catalog3_id`=#{catalog3Id}
     </select>
+
+    <select id="getBaseAttrInfoListByValueIds" resultMap="baseAttrList">
+        SELECT
+        bi.id,attr_name,catalog3_id,bv.`id` attr_value_id,bv.`value_name`
+        FROM `base_attr_info` bi INNER JOIN `base_attr_value` bv
+        ON bi.id=bv.`attr_id`
+        WHERE bv.`id` IN (${valueIds})
+    </select>
+
     <resultMap id="baseAttrList" type="com.atguigu.gmall0401.bean.BaseAttrInfo" autoMapping="true">
         <result property="id" column="id"></result>
         <result property="attrName" column="attr_name"></result>
