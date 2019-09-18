@@ -23,5 +23,5 @@ public interface UserService {
 
     UserInfo getUserInfo(String id);
 
-    Boolean login(UserInfo userInfo);
+    UserInfo login(UserInfo userInfo);
 }

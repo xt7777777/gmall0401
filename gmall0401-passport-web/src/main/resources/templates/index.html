@@ -100,6 +100,7 @@
                             var originUrl = $("#originUrl").val();
                             console.log("originUrl:"+originUrl);
                             if(originUrl==''){
+                                //console.log(originUrl + "newToken=" + data);
                                 window.location.href="http://www.gmall.com/"
 								return ;
                             }
@@ -111,6 +112,7 @@
                             }else{
                                 originUrl+='&'
                             }
+                            //console.log(originUrl + "newToken=" + data);
                             window.location.href=originUrl+"newToken="+data;
                             return ;
                         }else{

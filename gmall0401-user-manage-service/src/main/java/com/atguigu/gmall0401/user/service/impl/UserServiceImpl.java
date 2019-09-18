@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean login(UserInfo userInfo) {
+    public UserInfo login(UserInfo userInfo) {
 
         // 1.比对数据库信息 用户名 密码
         String passwd = userInfo.getPasswd();
@@ -93,8 +93,8 @@ public class UserServiceImpl implements UserService {
             String userInfoJson = JSON.toJSONString(userInfo1);
             jedis.setex(userKey,userKey_timeOut,userInfoJson);
             jedis.close();
-            return true;
+            return userInfo1;
         }
-        return false;
+        return null;
     }
 }
