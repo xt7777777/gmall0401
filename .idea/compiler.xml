@@ -16,6 +16,7 @@
         <module name="gmall0401-manage-service" />
         <module name="gmall0401-manage-web" />
         <module name="gmall0401-order-web" />
+        <module name="gmall0401-passport-web" />
         <module name="gmall0401-user-manage" />
         <module name="gmall0401-util-common" />
         <module name="gmall0401-util-service" />
@@ -33,6 +34,7 @@
       <module name="gmall0401-manage-web" target="1.8" />
       <module name="gmall0401-order-web" target="1.8" />
       <module name="gmall0401-parent" target="1.8" />
+      <module name="gmall0401-passport-web" target="1.8" />
       <module name="gmall0401-user-manage" target="1.8" />
       <module name="gmall0401-util-common" target="1.8" />
       <module name="gmall0401-util-service" target="1.8" />

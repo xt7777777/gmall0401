@@ -14,4 +14,6 @@ public interface ListService {
 
     public SkuLsResult getSkuLsInfoList(SkuLsParams skuLsParam);
 
+    public void incrHotScore(String skuId);
+
 }

@@ -5,11 +5,9 @@ import com.atguigu.gmall0401.bean.SkuLsInfo;
 import com.atguigu.gmall0401.bean.SkuLsParams;
 import com.atguigu.gmall0401.bean.SkuLsResult;
 import com.atguigu.gmall0401.service.ListService;
+import com.atguigu.gmall0401.util.RedisUtil;
 import io.searchbox.client.JestClient;
-import io.searchbox.core.DocumentResult;
-import io.searchbox.core.Index;
-import io.searchbox.core.Search;
-import io.searchbox.core.SearchResult;
+import io.searchbox.core.*;
 import io.searchbox.core.search.aggregation.TermsAggregation;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -21,6 +19,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +34,11 @@ public class ListServiceImpl implements ListService {
 
     @Autowired
     JestClient jestClient;
+
+    @Autowired
+    RedisUtil redisUtil;
+
+
 
     @Override
     public void saveSkuLsInfo (SkuLsInfo skuLsInfo){
@@ -95,11 +99,16 @@ public class ListServiceImpl implements ListService {
         Search search = searchBuilder.addIndex("gmall0401_sku_info").addType("doc").build();
         SkuLsResult skuLsResult = new SkuLsResult();
         try {
+            // 商品信息列表
             List<SkuLsInfo> skuLsInfoList = new ArrayList<>();
             SearchResult searchResult = jestClient.execute(search);
             List<SearchResult.Hit<SkuLsInfo, Void>> hits = searchResult.getHits(SkuLsInfo.class);
             for (SearchResult.Hit<SkuLsInfo, Void> hit : hits) {
                 SkuLsInfo skuLsInfo = hit.source;
+
+                String skuNameHL = hit.highlight.get("skuName").get(0);
+                skuLsInfo.setSkuName(skuNameHL);
+
                 skuLsInfoList.add(skuLsInfo);
             }
             skuLsResult.setSkuLsInfoList(skuLsInfoList);
@@ -123,6 +132,39 @@ public class ListServiceImpl implements ListService {
         }
 
         return skuLsResult;
+    }
+
+    @Override
+    public void incrHotScore(String skuId) {
+        Jedis jedis = redisUtil.getJedis();
+
+        // 每次执行在redis中做+1
+        // 设计key ->   type key value
+        String hotScoreKey = "sku:" + skuId + ":hotscore";
+        Long hotScore = jedis.incr(hotScoreKey);
+        // 计数可以被10整除时 更新es
+        if (hotScore % 10 == 0){
+            updateHotScoreEs(skuId,hotScore);
+        }
+
+    }
+
+
+    public void updateHotScoreEs(String skuId, Long hotScore){
+
+        String updateString = "{\n" +
+                "  \"doc\": {\n" +
+                "    \"hotScore\":"+hotScore+"\n" +
+                "  }\n" +
+                "}";
+
+        Update update = new Update.Builder(updateString).index("gmall0401_sku_info").type("doc").id(skuId).build();
+        try {
+            jestClient.execute(update);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

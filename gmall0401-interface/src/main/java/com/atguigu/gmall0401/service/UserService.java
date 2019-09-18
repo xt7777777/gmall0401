@@ -22,4 +22,6 @@ public interface UserService {
     void delUser(String id);
 
     UserInfo getUserInfo(String id);
+
+    Boolean login(UserInfo userInfo);
 }

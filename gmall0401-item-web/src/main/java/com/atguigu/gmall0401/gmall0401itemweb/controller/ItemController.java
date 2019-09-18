@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.atguigu.gmall0401.bean.SkuInfo;
 import com.atguigu.gmall0401.bean.SpuSaleAttr;
+import com.atguigu.gmall0401.service.ListService;
 import com.atguigu.gmall0401.service.ManageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,6 +26,11 @@ public class ItemController {
     @Reference
     ManageService manageService;
 
+    @Reference
+    ListService listService;
+
+
+
     @GetMapping("{skuId}.html")
     public String item(@PathVariable("skuId") String skuId, HttpServletRequest request){
 
@@ -41,6 +47,9 @@ public class ItemController {
         request.setAttribute("valuesSkuJson",valuesSkuJson);
 //        String skuInfoJson = JSON.toJSONString(skuInfo);
 //        return skuInfoJson;
+
+        listService.incrHotScore(skuId);
+
         return "item";
 
     }

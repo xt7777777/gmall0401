@@ -13,7 +13,8 @@
       <module fileurl="file://$PROJECT_DIR$/gmall0401-manage-web/gmall0401-manage-web.iml" filepath="$PROJECT_DIR$/gmall0401-manage-web/gmall0401-manage-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-order-web/gmall0401-order-web.iml" filepath="$PROJECT_DIR$/gmall0401-order-web/gmall0401-order-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-parent/gmall0401-parent.iml" filepath="$PROJECT_DIR$/gmall0401-parent/gmall0401-parent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/gmall0401-user-manage/gmall0401-user-manage.iml" filepath="$PROJECT_DIR$/gmall0401-user-manage/gmall0401-user-manage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmall0401-passport-web/gmall0401-passport-web.iml" filepath="$PROJECT_DIR$/gmall0401-passport-web/gmall0401-passport-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmall0401-user-manage-service/gmall0401-user-manage-service.iml" filepath="$PROJECT_DIR$/gmall0401-user-manage-service/gmall0401-user-manage-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-util-common/gmall0401-util-common.iml" filepath="$PROJECT_DIR$/gmall0401-util-common/gmall0401-util-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-util-service/gmall0401-util-service.iml" filepath="$PROJECT_DIR$/gmall0401-util-service/gmall0401-util-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-util-web/gmall0401-util-web.iml" filepath="$PROJECT_DIR$/gmall0401-util-web/gmall0401-util-web.iml" />
