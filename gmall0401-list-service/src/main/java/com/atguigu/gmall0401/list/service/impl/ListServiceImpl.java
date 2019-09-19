@@ -106,8 +106,10 @@ public class ListServiceImpl implements ListService {
             for (SearchResult.Hit<SkuLsInfo, Void> hit : hits) {
                 SkuLsInfo skuLsInfo = hit.source;
 
-                String skuNameHL = hit.highlight.get("skuName").get(0);
-                skuLsInfo.setSkuName(skuNameHL);
+                if (skuLsParam.getKeyword() != null && skuLsParam.getKeyword().length() > 0) {
+                    String skuNameHL = hit.highlight.get("skuName").get(0);
+                    skuLsInfo.setSkuName(skuNameHL);
+                }
 
                 skuLsInfoList.add(skuLsInfo);
             }

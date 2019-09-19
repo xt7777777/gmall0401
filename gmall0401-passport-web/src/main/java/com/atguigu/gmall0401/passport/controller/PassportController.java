@@ -6,8 +6,10 @@ import com.atguigu.gmall0401.service.UserService;
 import com.atguigu.gmall0401.util.JwtUtil;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +34,8 @@ public class PassportController {
 
 
     @GetMapping("index")
-    public String index(){
+    public String index(@RequestParam(value = "originUrl", defaultValue = "") String originUrl, Model model){
+        model.addAttribute("originUrl", originUrl);
         return "index";
     }
 
@@ -75,5 +78,24 @@ public class PassportController {
 
     }
 
+
+    @GetMapping("verify")
+    @ResponseBody
+    public String verify(@RequestParam("token") String token, @RequestParam("currentIP") String currentIp) {
+
+        // 验证token
+        Map<String, Object> userMap = JwtUtil.decode(token, jwtKey, currentIp);
+        if (userMap != null) {
+            // 验证缓存
+            String userId = (String)userMap.get("userId");
+            Boolean isLogin = userService.verify(userId);
+            if (isLogin) {
+                return "success";
+            }
+        }
+
+        return "fail";
+
+    }
 
 }

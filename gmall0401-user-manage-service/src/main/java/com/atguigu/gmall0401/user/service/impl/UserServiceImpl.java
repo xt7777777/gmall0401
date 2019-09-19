@@ -97,4 +97,19 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public Boolean verify(String userId) {
+
+        Jedis jedis = redisUtil.getJedis();
+        String userKey = userKey_prefix + userId + userinfoKey_suffix;
+        Boolean isLogin = jedis.exists(userKey);
+        if (isLogin) { // 如果在线并且活跃 延长key的超时时间
+            jedis.expire(userKey, userKey_timeOut);
+        }
+
+        jedis.close();
+
+        return isLogin;
+    }
 }
