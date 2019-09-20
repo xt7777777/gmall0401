@@ -45,9 +45,10 @@ public class CartServiceImpl implements CartService {
         if (cartInfoExists != null){
 
             cartInfoExists.setSkuName(skuInfo.getSkuName());
-            cartInfoExists.setCartPrice(skuInfo.getPrice());
+            //cartInfoExists.setCartPrice(skuInfo.getPrice());
             cartInfoExists.setSkuNum(cartInfoExists.getSkuNum() + num);
             cartInfoExists.setImgUrl(skuInfo.getSkuDefaultImg());
+            cartInfoExists.setSkuPrice(skuInfo.getPrice());
             cartInfoMapper.updateByPrimaryKeySelective(cartInfoExists);
 
         } else {

@@ -81,38 +81,38 @@
 
         <div class="One_ShopCon">
             <ul>
-                <li  >
+                <li th:each="cartInfo : ${cartList}" >
                     <div> </div>
 
                     <div>
                         <ol>
                             <li><input type="checkbox"   class="check"   onchange="checkSku(this)"  /></li>
                             <li>
-                                <dt><img   src="img\shop1.jpg" alt=""></dt>
-                                <dd  onclick="toItem(1)">
+                                <dt><img th:src="${cartInfo.imgUrl}"  src="img\shop1.jpg" alt=""></dt>
+                                <dd th:onclick="'toIem(' + ${cartInfo.skuId} + ')'" onclick="toItem(1)">
                                     <p>
-                                        <span  >TCL 55A950C 55英寸32核</span>
+                                        <span th:text="${cartInfo.skuName}" >TCL 55A950C 55英寸32核</span>
                                     </p>
                                 </dd>
                             </li>
                             <li>
-                                <p class="dj"  >￥4599.00</p>
+                                <p class="dj" th:utext="'￥<del>' + ${#numbers.formatDecimal(cartInfo.cartPrice,1,2)} + '</del>(' + ${#numbers.formatDecimal(cartInfo.skuPrice,1,2)} + ')'" >￥4599.00</p>
                             </li>
                             <li>
                                 <p>
                                     <span>-</span>
-                                    <span>5</span>
+                                    <span th:text="${cartInfo.skuNum}" >5</span>
                                     <span>+</span>
                                 </p>
                             </li>
-                            <li style="font-weight:bold"><p class="zj"  >￥22995.00</p></li>
+                            <li style="font-weight:bold"><p class="zj" th:text="'￥' + (${#numbers.formatDecimal(cartInfo.skuPrice,1,2)} * ${cartInfo.skuNum})"  >￥22995.00</p></li>
                             <li>
                                 <p>删除</p>
                             </li>
                         </ol>
                     </div>
                 </li>
-                 <li>
+                 <!--<li>
                     <div>
                     </div>
                     <div>
@@ -149,7 +149,7 @@
                             </li>
                         </ol>
                     </div>
-                </li> 
+                </li> -->
 
             </ul>
         </div>

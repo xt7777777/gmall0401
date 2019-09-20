@@ -52,6 +52,7 @@ public class CartController {
 
 
     @GetMapping("cartList")
+    @LoginRequire(autoRedirect = false)
     public String cartList(HttpServletRequest request){
 
         String userId = (String) request.getAttribute("userId");
