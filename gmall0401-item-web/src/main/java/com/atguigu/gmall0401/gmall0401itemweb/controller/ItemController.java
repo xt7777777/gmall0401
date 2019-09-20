@@ -34,7 +34,7 @@ public class ItemController {
 
 
     @GetMapping("{skuId}.html")
-    @LoginRequire
+//    @LoginRequire
     public String item(@PathVariable("skuId") String skuId, HttpServletRequest request){
 
         SkuInfo skuInfo = manageService.getSkuInfo(skuId);

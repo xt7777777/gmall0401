@@ -41,7 +41,7 @@ public class UserController {
     public String deleteUser(String id){
         userService.delUser(id);
         return  "success";
-    }
+}
 
     @PostMapping("updateUser")
     public String updateUser(UserInfo userInfo){
