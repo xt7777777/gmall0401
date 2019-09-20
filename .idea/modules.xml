@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/fastdfs-client-java/fastdfs-client-java.iml" filepath="$PROJECT_DIR$/fastdfs-client-java/fastdfs-client-java.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/gmall0401.iml" filepath="$PROJECT_DIR$/.idea/gmall0401.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-bean/gmall0401-bean.iml" filepath="$PROJECT_DIR$/gmall0401-bean/gmall0401-bean.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmall0401-cart-service/gmall0401-cart-service.iml" filepath="$PROJECT_DIR$/gmall0401-cart-service/gmall0401-cart-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmall0401-cart-web/gmall0401-cart-web.iml" filepath="$PROJECT_DIR$/gmall0401-cart-web/gmall0401-cart-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-interface/gmall0401-interface.iml" filepath="$PROJECT_DIR$/gmall0401-interface/gmall0401-interface.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-item-web/gmall0401-item-web.iml" filepath="$PROJECT_DIR$/gmall0401-item-web/gmall0401-item-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-list-service/gmall0401-list-service.iml" filepath="$PROJECT_DIR$/gmall0401-list-service/gmall0401-list-service.iml" />
