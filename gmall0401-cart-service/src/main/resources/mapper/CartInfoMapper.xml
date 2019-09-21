@@ -9,6 +9,14 @@
     </select>
 
     <resultMap id="cartMap" type="com.atguigu.gmall0401.bean.CartInfo" autoMapping="true">
-
     </resultMap>
+    
+    
+    <insert id="mergeCartList" >
+        INSERT INTO cart_info (user_id,sku_id,cart_price,sku_num,img_url,sku_name)
+        SELECT #{userIdDest},sku_id,cart_price,sku_num,img_url,sku_name FROM cart_info cc
+        WHERE cc.user_id = #{userIdOrig}
+        ON DUPLICATE KEY UPDATE cart_info.`sku_num`=cart_info.`sku_num`+cc.sku_num
+    </insert>
+    
 </mapper>

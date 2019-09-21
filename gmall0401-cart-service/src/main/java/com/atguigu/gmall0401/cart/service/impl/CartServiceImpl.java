@@ -9,6 +9,7 @@ import com.atguigu.gmall0401.cart.mapper.CartInfoMapper;
 import com.atguigu.gmall0401.service.CartService;
 import com.atguigu.gmall0401.service.ManageService;
 import com.atguigu.gmall0401.util.RedisUtil;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 
@@ -109,8 +110,9 @@ public class CartServiceImpl implements CartService {
     }
 
 
+
     /**
-     *  缓存没有查数据库
+     *  缓存没有查数据库 同时加载到缓存中
      * @param userId
      * @return
      */
@@ -118,20 +120,47 @@ public class CartServiceImpl implements CartService {
 
         // 读取数据库
         List<CartInfo> cartInfos = cartInfoMapper.selectCartListWithSkuPrice(userId);
-        // 加载到缓存中
-        // 为了方便插入redis 把list -> map
-        Map<String ,String> cartMap = new HashMap<>();
-        for (CartInfo cartInfo : cartInfos) {
-            cartMap.put(cartInfo.getSkuId(), JSON.toJSONString(cartInfo));
+        if (cartInfos != null && cartInfos.size() > 0) {
+            // 加载到缓存中
+            // 为了方便插入redis 把list -> map
+            Map<String, String> cartMap = new HashMap<>();
+            for (CartInfo cartInfo : cartInfos) {
+                cartMap.put(cartInfo.getSkuId(), JSON.toJSONString(cartInfo));
+            }
+
+            Jedis jedis = redisUtil.getJedis();
+            String cartKey = "cart:" + userId + ":info";
+            jedis.del(cartKey);
+            jedis.hmset(cartKey, cartMap);
+            jedis.expire(cartKey, 60 * 60 * 24);
+            jedis.close();
         }
-
-        Jedis jedis = redisUtil.getJedis();
-        String cartKey = "cart:" + userId + ":info";
-        jedis.hmset(cartKey, cartMap);
-        jedis.expire(cartKey, 60*60*24);
-
         return cartInfos;
 
+    }
+
+    /**
+     * 合并购物车
+     * @param userIdDest
+     * @param userIdOrig
+     * @return
+     */
+    @Override
+    public List<CartInfo> mergeCartList(String userIdDest, String userIdOrig) {
+
+        // 先做合并
+        cartInfoMapper.mergeCartList(userIdDest,userIdOrig);
+
+        // 删除 合并后把临时购物车删除
+
+        CartInfo cartInfo = new CartInfo();
+        cartInfo.setUserId(userIdOrig);
+        cartInfoMapper.delete(cartInfo);
+
+        //重新读取数据 加载缓存
+        List<CartInfo> cartInfoList = loadCartCache(userIdDest);
+
+        return cartInfoList;
     }
 
 }

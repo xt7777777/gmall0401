@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,14 +56,23 @@ public class CartController {
     @LoginRequire(autoRedirect = false)
     public String cartList(HttpServletRequest request){
 
+        List<CartInfo> cartList = new ArrayList<>();
         String userId = (String) request.getAttribute("userId");
-        if (userId == null){
-            userId = CookieUtil.getCookieValue(request, "user_tmp_id", false);
-        }
         if (userId != null){
-            List<CartInfo> cartList = cartService.cartList(userId);
-            request.setAttribute("cartList", cartList);
+            cartList = cartService.cartList(userId);
         }
+        String userTmpId = CookieUtil.getCookieValue(request, "user_tmp_id", false);
+        List<CartInfo> cartTempList = null;
+        if (userTmpId != null){
+            cartTempList = cartService.cartList(userTmpId);
+            cartList = cartTempList;
+        }
+        if (userId != null && cartTempList != null && cartTempList.size() > 0){
+            cartList = cartService.mergeCartList(userId, userTmpId);
+        }
+
+        request.setAttribute("cartList", cartList);
+
         return "cartList";
 
     }
