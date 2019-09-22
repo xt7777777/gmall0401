@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
         jedis.watch(tokenKey); // 监视tokenkey 开启事务
         Transaction transaction = jedis.multi();
         if (tokenExists != null && tokenExists.equals(token)){
-            transaction.del(tokenExists);
+            transaction.del(tokenKey);
         }
         List<Object> list = transaction.exec();
         if (list != null && list.size() > 0 && (Long)list.get(0) == 1L){
