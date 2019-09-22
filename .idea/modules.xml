@@ -13,6 +13,7 @@
       <module fileurl="file://$PROJECT_DIR$/gmall0401-list-web/gmall0401-list-web.iml" filepath="$PROJECT_DIR$/gmall0401-list-web/gmall0401-list-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-manage-service/gmall0401-manage-service.iml" filepath="$PROJECT_DIR$/gmall0401-manage-service/gmall0401-manage-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-manage-web/gmall0401-manage-web.iml" filepath="$PROJECT_DIR$/gmall0401-manage-web/gmall0401-manage-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmall0401-order-service/gmall0401-order-service.iml" filepath="$PROJECT_DIR$/gmall0401-order-service/gmall0401-order-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-order-web/gmall0401-order-web.iml" filepath="$PROJECT_DIR$/gmall0401-order-web/gmall0401-order-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-parent/gmall0401-parent.iml" filepath="$PROJECT_DIR$/gmall0401-parent/gmall0401-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-passport-web/gmall0401-passport-web.iml" filepath="$PROJECT_DIR$/gmall0401-passport-web/gmall0401-passport-web.iml" />

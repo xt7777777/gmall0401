@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/gmall0401-passport-web/pom.xml" />
         <option value="$PROJECT_DIR$/gmall0401-cart-service/pom.xml" />
         <option value="$PROJECT_DIR$/gmall0401-cart-web/pom.xml" />
+        <option value="$PROJECT_DIR$/gmall0401-order-service/pom.xml" />
       </list>
     </option>
   </component>

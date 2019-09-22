@@ -9,10 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,19 +56,23 @@ public class CartController {
     @LoginRequire(autoRedirect = false)
     public String cartList(HttpServletRequest request){
 
-        List<CartInfo> cartList = new ArrayList<>();
         String userId = (String) request.getAttribute("userId");
-        if (userId != null){
-            cartList = cartService.cartList(userId);
-        }
-        String userTmpId = CookieUtil.getCookieValue(request, "user_tmp_id", false);
+        List<CartInfo> cartList = null;
         List<CartInfo> cartTempList = null;
-        if (userTmpId != null){
+        String userTmpId = CookieUtil.getCookieValue(request, "user_tmp_id", false);
+        if (userId != null){
+            if (userTmpId != null) {
+                cartTempList = cartService.cartList(userTmpId);
+                if (cartTempList != null && cartTempList.size() > 0) {
+                    cartList = cartService.mergeCartList(userId, userTmpId);
+                }
+            }
+            if (cartList == null || cartList.size() == 0){
+                cartList = cartService.cartList(userId); // 如果不需要合并 去登陆后的购物车
+            }
+        } else {
             cartTempList = cartService.cartList(userTmpId);
             cartList = cartTempList;
-        }
-        if (userId != null && cartTempList != null && cartTempList.size() > 0){
-            cartList = cartService.mergeCartList(userId, userTmpId);
         }
 
         request.setAttribute("cartList", cartList);
@@ -76,5 +80,25 @@ public class CartController {
         return "cartList";
 
     }
+
+
+    @PostMapping("checkCart")
+    @LoginRequire(autoRedirect = false)
+    @ResponseBody
+    public void checkCart(@RequestParam("isChecked") String isChecked, @RequestParam("skuId")String skuId, HttpServletRequest request){
+
+        String userId = (String)request.getAttribute("userId");
+        if (userId == null){
+            userId = CookieUtil.getCookieValue(request, "user_tmp_id", false);
+        }
+
+        cartService.checkCart(userId, skuId, isChecked);
+
+
+//        return "";
+
+    }
+
+
 
 }

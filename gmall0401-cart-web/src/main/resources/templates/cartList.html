@@ -86,7 +86,7 @@
 
                     <div>
                         <ol>
-                            <li><input type="checkbox"   class="check"   onchange="checkSku(this)"  /></li>
+                            <li><input type="checkbox" th:checked="(${cartInfo.isChecked == '1'})?'true':'false'"  class="check" th:value="${cartInfo.skuId}"  onchange="checkSku(this)"  /></li>
                             <li>
                                 <dt><img th:src="${cartInfo.imgUrl}"  src="img\shop1.jpg" alt=""></dt>
                                 <dd th:onclick="'toIem(' + ${cartInfo.skuId} + ')'" onclick="toItem(1)">
@@ -176,7 +176,7 @@
 
                 </ol>
             </div>
-            <div><button  onclick="toTrade()" type="button">去结算</button></div>
+            <div><button th:onclick="(${userId}==null)?'javascript:alert(\'请先登录\')':'toTrade()'" onclick="toTrade()" type="button">去结算</button></div>
         </div>
     </div>
 </div>
@@ -266,7 +266,7 @@
 <script type="text/javascript">
 
      function toTrade(){
-         window.location.href="http://cart.gmall.com/toTrade";
+         window.location.href="http://order.gmall.com/trade";
     }
     function toItem(skuId) {
         window.location.href="http://item.gmall.com/"+skuId+".html";

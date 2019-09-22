@@ -33,4 +33,13 @@ public interface CartService {
      * @return
      */
     List<CartInfo> mergeCartList(String userIdDest, String userIdOrig);
+
+    /**
+     * 勾选购物车商品
+     * @param userId
+     * @param skuId
+     */
+    void checkCart(String userId, String skuId, String isChecked);
+
+    List<CartInfo> getCheckedCartList(String userId);
 }
