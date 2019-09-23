@@ -17,10 +17,12 @@
       <module fileurl="file://$PROJECT_DIR$/gmall0401-order-web/gmall0401-order-web.iml" filepath="$PROJECT_DIR$/gmall0401-order-web/gmall0401-order-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-parent/gmall0401-parent.iml" filepath="$PROJECT_DIR$/gmall0401-parent/gmall0401-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-passport-web/gmall0401-passport-web.iml" filepath="$PROJECT_DIR$/gmall0401-passport-web/gmall0401-passport-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmall0401-payment/gmall0401-payment.iml" filepath="$PROJECT_DIR$/gmall0401-payment/gmall0401-payment.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-user-manage-service/gmall0401-user-manage-service.iml" filepath="$PROJECT_DIR$/gmall0401-user-manage-service/gmall0401-user-manage-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-util-common/gmall0401-util-common.iml" filepath="$PROJECT_DIR$/gmall0401-util-common/gmall0401-util-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-util-service/gmall0401-util-service.iml" filepath="$PROJECT_DIR$/gmall0401-util-service/gmall0401-util-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall0401-util-web/gmall0401-util-web.iml" filepath="$PROJECT_DIR$/gmall0401-util-web/gmall0401-util-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gware-manage/gware-manage.iml" filepath="$PROJECT_DIR$/gware-manage/gware-manage.iml" />
     </modules>
   </component>
 </project>

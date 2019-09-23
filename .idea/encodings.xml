@@ -15,9 +15,11 @@
     <file url="file://$PROJECT_DIR$/gmall0401-order-web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gmall0401-parent" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gmall0401-passport-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gmall0401-payment" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gmall0401-user-manage-service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gmall0401-util-common" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gmall0401-util-service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gmall0401-util-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gware-manage" charset="UTF-8" />
   </component>
 </project>

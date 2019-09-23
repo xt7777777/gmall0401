@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void saveOrder(OrderInfo orderInfo) {
+    public String saveOrder(OrderInfo orderInfo) {
 
         orderInfoMapper.insertSelective(orderInfo);
 
@@ -48,6 +48,8 @@ public class OrderServiceImpl implements OrderService {
             orderDetailMapper.insertSelective(orderDetail);
 
         }
+
+        return orderInfo.getId();
 
     }
 
@@ -91,5 +93,16 @@ public class OrderServiceImpl implements OrderService {
         Jedis jedis = redisUtil.getJedis();
         jedis.del(tokenKey);
 
+    }
+
+    @Override
+    public OrderInfo getorderInfo(String orderId) {
+
+        OrderInfo orderInfo = orderInfoMapper.selectByPrimaryKey(orderId);
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setOrderId(orderId);
+        List<OrderDetail> select = orderDetailMapper.select(orderDetail);
+        orderInfo.setOrderDetailList(select);
+        return orderInfo;
     }
 }

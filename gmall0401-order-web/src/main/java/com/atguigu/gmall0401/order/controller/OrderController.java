@@ -9,15 +9,19 @@ import com.atguigu.gmall0401.service.CartService;
 import com.atguigu.gmall0401.service.ManageService;
 import com.atguigu.gmall0401.service.OrderService;
 import com.atguigu.gmall0401.service.UserService;
+import com.atguigu.gmall0401.util.HttpClientUtil;
 import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.management.relation.Relation;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 /**
  * @author xtsky
@@ -104,12 +108,105 @@ public class OrderController {
             orderDetail.setImgUrl(skuInfo.getSkuDefaultImg());
             orderDetail.setSkuName(skuInfo.getSkuName());
 
+            if (!orderDetail.getOrderPrice().equals(skuInfo.getPrice())){
+
+                request.setAttribute("errMsg", "商品价格已发生变动，请重新下单！");
+                return "tradeFail";
+
+            }
+
         }
 
-        orderService.saveOrder(orderInfo);
+        List<OrderDetail> errList = Collections.synchronizedList(new ArrayList<>());
+        Stream<CompletableFuture<String>> completableFutureStream = orderDetailList.stream().map(orderDetail ->
+                CompletableFuture.supplyAsync(() -> checkSkuNum(orderDetail)).whenComplete((hasStock, ex) -> {
+                    if (hasStock.equals("0")) {
+                        errList.add(orderDetail);
+                    }
+                })
+        );
+        CompletableFuture[] completableFutures = completableFutureStream.toArray(CompletableFuture[]::new);
 
-        return "redirect://payment.gmall.com/index";
+        CompletableFuture.allOf(completableFutures).join();
 
+        if (errList.size() > 0){
+            StringBuffer errStringBuffer = new StringBuffer();
+            for (OrderDetail orderDetail : errList) {
+                errStringBuffer.append("商品：" + orderDetail.getSkuName() + "库存不足!");
+            }
+            request.setAttribute("errMsg", errStringBuffer.toString());
+            return "tradeFail";
+        }
+
+        /*for (OrderDetail orderDetail : orderDetailList) {
+
+            String hasStock = HttpClientUtil.doGet("http://www.gware.com/hasStock?skuId=" + orderDetail.getSkuId() + "&num=" + orderDetail.getSkuNum());
+
+            if ("1".equals(hasStock)){
+
+
+            } else {
+
+
+            }
+
+        }*/
+
+        String orderId = orderService.saveOrder(orderInfo);
+
+        // 删除购物车信息
+        // ... 购物车缓存删掉 未加~  ddd
+
+        return "redirect://payment.gmall.com/index?orderId=" + orderId;
+
+    }
+
+    public String checkSkuNum(OrderDetail orderDetail){
+        String hasStock = HttpClientUtil.doGet("http://www.gware.com/hasStock?skuId=" + orderDetail.getSkuId() + "&num=" + orderDetail.getSkuNum());
+        return hasStock;
+    }
+
+
+
+
+    // 1,2,3,4,5,6,7,8,9,  list       找出所有能被3整除的数 放到一个清单里
+    @Test
+    public void test1(){
+        List<Integer> list = Arrays.asList(1,2,3,4,5,6,7,8,9);
+//        List rsList = new ArrayList();
+        List rsList = Collections.synchronizedList(new ArrayList<>());
+        Stream<CompletableFuture<Boolean>> completableFutureStream = list.stream().map(num ->
+                CompletableFuture.supplyAsync(() -> checkNum(num)).whenComplete((ifPass, ex) -> {
+                    if (ifPass) {
+                        rsList.add(num);
+                    }
+                }));
+        CompletableFuture[] completableFutures = completableFutureStream.toArray(CompletableFuture[]::new);
+
+        CompletableFuture.allOf(completableFutures).join();
+
+//        list.stream().map(num -> {
+//            if (checkNum(num)) {
+//                rsList.add(num);
+//            }
+//            return num;
+//        }).toArray(Integer[]::new);
+
+        System.out.println(rsList);
+
+    }
+
+    private Boolean checkNum(Integer num){
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (num % 3 == 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
