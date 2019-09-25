@@ -176,6 +176,24 @@ public class PaymentController {
     }
 
 
+    /**
+     * 放消息队列里
+     * @param orderId
+     * @return
+     */
+    @GetMapping("sendPayment")
+    @ResponseBody
+    public String sendPayment(String orderId){
+
+        paymentInfoService.sendPaymentToOrder(orderId, "success");
+
+        return "success";
+
+    }
+
+
+
+
     @GetMapping("/alipay/callback/return")
     @ResponseBody
     public String alipayReturn(){

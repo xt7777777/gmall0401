@@ -4,8 +4,13 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.atguigu.gmall0401.bean.PaymentInfo;
 import com.atguigu.gmall0401.payment.mapper.PaymentInfoMapper;
 import com.atguigu.gmall0401.service.PaymentInfoService;
+import com.atguigu.gmall0401.util.ActiveMQUtil;
+import org.apache.activemq.command.ActiveMQMapMessage;
+import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.jms.*;
 
 /**
  * @author xtsky
@@ -16,6 +21,11 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
 
     @Autowired
     PaymentInfoMapper paymentInfoMapper;
+
+    @Autowired
+    ActiveMQUtil activeMQUtil;
+
+
 
 
 
@@ -40,6 +50,27 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         Example example = new Example(PaymentInfo.class);
         example.createCriteria().andEqualTo("outTradeNo", out_trade_no);
         paymentInfoMapper.updateByExampleSelective(paymentInfoForUpdate, example);
+
+    }
+
+    @Override
+    public void sendPaymentToOrder(String orderId, String result) {
+
+        Connection connection = activeMQUtil.getConnection();
+
+        try {
+            Session session = connection.createSession(true, Session.SESSION_TRANSACTED);
+            MessageProducer producer = session.createProducer(session.createQueue("PAYMENT_TO_ORDER"));
+            MapMessage mapMessage = new ActiveMQMapMessage();
+            mapMessage.setString("orderId", orderId);
+            mapMessage.setString("result", result);
+
+            producer.send(mapMessage);
+
+            session.commit(); // 事务是true 需要commit
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
 
     }
 

@@ -13,4 +13,6 @@ public interface PaymentInfoService {
     public PaymentInfo getPaymentInfo(PaymentInfo paymentInfo);
 
     public void updatePaymentInfoByOutTradeNo(String out_trade_no, PaymentInfo paymentInfoForUpdate);
+
+    public void sendPaymentToOrder(String orderId, String result);
 }
