@@ -1,6 +1,7 @@
 package com.atguigu.gmall0401.order.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.atguigu.gmall0401.bean.*;
 import com.atguigu.gmall0401.config.LoginRequire;
 import com.atguigu.gmall0401.enums.OrderStatus;
@@ -12,9 +13,12 @@ import com.atguigu.gmall0401.service.UserService;
 import com.atguigu.gmall0401.util.HttpClientUtil;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.management.relation.Relation;
 import javax.servlet.http.HttpServletRequest;
@@ -117,9 +121,18 @@ public class OrderController {
 
         }
 
+
+        ThreadPoolTaskExecutor threadPoolTaskExecutor=new ThreadPoolTaskExecutor();
+        threadPoolTaskExecutor.setCorePoolSize(4*2);    //线程数
+        threadPoolTaskExecutor.setQueueCapacity(100);    //等待队列容量 ，线程数不够任务会等待
+        threadPoolTaskExecutor.setMaxPoolSize(50);     // 最大线程数，等待数不够会增加线程数，直到达此上线  超过这个范围会抛异常
+        threadPoolTaskExecutor.initialize();
+
+
+
         List<OrderDetail> errList = Collections.synchronizedList(new ArrayList<>());
         Stream<CompletableFuture<String>> completableFutureStream = orderDetailList.stream().map(orderDetail ->
-                CompletableFuture.supplyAsync(() -> checkSkuNum(orderDetail)).whenComplete((hasStock, ex) -> {
+                CompletableFuture.supplyAsync(() -> checkSkuNum(orderDetail),threadPoolTaskExecutor).whenComplete((hasStock, ex) -> {
                     if (hasStock.equals("0")) {
                         errList.add(orderDetail);
                     }
@@ -207,6 +220,20 @@ public class OrderController {
         } else {
             return false;
         }
+    }
+
+
+    @PostMapping("orderSplit")
+    @ResponseBody
+    public String orderSplit(@RequestParam("orderId") String orderId, @RequestParam("wareSkuMap") String wareSkuMap){
+
+
+        List<Map> orderDetailForWareList = orderService.orderSplit(orderId, wareSkuMap);
+
+        String jsonString = JSON.toJSONString(orderDetailForWareList);
+
+        return jsonString;
+
     }
 
 

@@ -109,6 +109,7 @@ public class PaymentController {
 
         paymentInfoService.savePaymentInfo(paymentInfo);
 
+        paymentInfoService.sendDelayPaymentResult(outTradeNo, 30L, 3);
 
         return submitHtml;
 
@@ -118,6 +119,11 @@ public class PaymentController {
     @PostMapping("/alipay/callback/notify")
 //    @ResponseBody
     public String notify(@RequestParam Map<String, String> paramMap, HttpServletRequest request) throws AlipayApiException {
+
+//        if (1 == 1){
+//            return "";
+//        }
+
 
         // 验签  支付宝公钥 数据
 
@@ -177,7 +183,7 @@ public class PaymentController {
 
 
     /**
-     * 放消息队列里
+     * 放消息队列里   直接发送 支付成功了~~
      * @param orderId
      * @return
      */

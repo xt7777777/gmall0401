@@ -1,6 +1,10 @@
 package com.atguigu.gmall0401.service;
 
 import com.atguigu.gmall0401.bean.OrderInfo;
+import com.atguigu.gmall0401.enums.ProcessStatus;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xtsky
@@ -18,4 +22,13 @@ public interface OrderService {
 
     public OrderInfo getorderInfo(String orderId);
 
+    public void updateStatus(String orderId, ProcessStatus processStatus, OrderInfo... orderInfos);
+
+    List<Integer> checkExpiredCoupon();
+
+    void handleExpiredCoupon(Integer couponId);
+
+    List<Map> orderSplit(String orderId, String wareSkuMap);
+
+    public Map initWareParamJson(String orderId);
 }
